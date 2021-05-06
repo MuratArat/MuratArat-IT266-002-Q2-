@@ -242,7 +242,74 @@ void Cmd_Give_f (edict_t *ent)
 		if (!give_all)
 			return;
 	}
+	if (give_all || Q_stricmp(name, "Str") == 0)
+	{
+		ent->client->pers.strStat += 1;
+	}
+	if (give_all || Q_stricmp(name, "Dex") == 0)
+	{
+		ent->client->pers.dexStat += 1;
+	}
+	if (give_all || Q_stricmp(name, "Spd") == 0)
+	{
+		ent->client->pers.spdStat += 1;
+	}
+	if (give_all || Q_stricmp(name, "Vamp") == 0)
+	{
+		ent->client->pers.vampStat += .1;
+	}
+	if (give_all || Q_stricmp(name, "Str10") == 0)
+	{
+		ent->client->pers.strStat += 10;
+	}
+	if (give_all || Q_stricmp(name, "Dex10") == 0)
+	{
+		ent->client->pers.dexStat += 10;
+	}
+	if (give_all || Q_stricmp(name, "Spd10") == 0)
+	{
+		ent->client->pers.spdStat += 10;
+	}
+	if (give_all || Q_stricmp(name, "Str25") == 0)
+	{
+		ent->client->pers.strStat += 25;
+	}
+	if (give_all || Q_stricmp(name, "Dex25") == 0)
+	{
+		ent->client->pers.dexStat += 25;
+	}
+	if (give_all || Q_stricmp(name, "Spd25") == 0)
+	{
+		ent->client->pers.spdStat += 25;
+	}
+	if (give_all || Q_stricmp(name, "Str100") == 0)
+	{
+		ent->client->pers.strStat += 100;
+	}
+	if (give_all || Q_stricmp(name, "Dex100") == 0)
+	{
+		ent->client->pers.dexStat += 100;
+	}
+	if (give_all || Q_stricmp(name, "Spd100") == 0)
+	{
+		ent->client->pers.spdStat += 100;
+	}
+	if (Q_stricmp(name, "block") == 0)
+	{
+		ent->flags ^= FL_GODMODE;
 
+		if (ent->client->pers.block == 1)
+		{
+			ent->client->pers.block = 0;
+		}
+
+		else if (ent->client->pers.block == 0)
+		{
+			ent->client->pers.curHealth = ent->client->pers.health;
+			ent->client->pers.block = 1;
+		}
+
+	}
 	if (give_all)
 	{
 		for (i=0 ; i<game.num_items ; i++)
@@ -653,6 +720,7 @@ void Cmd_Kill_f (edict_t *ent)
 	ent->health = 0;
 	meansOfDeath = MOD_SUICIDE;
 	player_die (ent, ent, ent, 100000, vec3_origin);
+	
 }
 
 /*

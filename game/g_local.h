@@ -498,6 +498,7 @@ extern	int	body_armor_index;
 #define MOD_TRIGGER_HURT	31
 #define MOD_HIT				32
 #define MOD_TARGET_BLASTER	33
+#define MOD_PUNCH			34
 #define MOD_FRIENDLY_FIRE	0x8000000
 
 extern	int	meansOfDeath;
@@ -837,10 +838,17 @@ typedef struct
 									// just don't have a connection yet
 
 	// values saved and restored from edicts when changing levels
+	int			curHealth;
 	int			health;
 	int			max_health;
 	int			savedFlags;
-
+	int			punchVal;
+	int			statPoints;
+	int			strStat;
+	int			dexStat;
+	int			spdStat;
+	qboolean	block;
+	float		stam, stamMax, stamRegen,vampStat;
 	int			selected_item;
 	int			inventory[MAX_ITEMS];
 
@@ -959,6 +967,7 @@ struct gclient_s
 
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?
+	int ClassSpeed;
 };
 
 

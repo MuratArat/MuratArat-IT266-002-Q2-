@@ -413,6 +413,7 @@ dmg		default is 15
 speed	default is 1000
 */
 
+
 void use_target_blaster (edict_t *self, edict_t *other, edict_t *activator)
 {
 	int effect;

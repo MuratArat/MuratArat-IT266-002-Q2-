@@ -263,6 +263,7 @@ void NoAmmoWeaponChange (edict_t *ent)
 		ent->client->newweapon = FindItem ("super shotgun");
 		return;
 	}
+	/*
 	if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))]
 		&&  ent->client->pers.inventory[ITEM_INDEX(FindItem("shotgun"))] )
 	{
@@ -270,7 +271,15 @@ void NoAmmoWeaponChange (edict_t *ent)
 		return;
 	}
 	ent->client->newweapon = FindItem ("blaster");
+	*/
+	if (ent->client->pers.inventory[ITEM_INDEX(FindItem("shells"))] 
+		&& ent->client->pers.inventory[ITEM_INDEX(FindItem("shotgun"))])
+	{ 
+		ent->client->newweapon = FindItem("shotgun"); return; 
+	} 
+	ent->client->newweapon = FindItem("Hands");
 }
+
 
 /*
 =================
@@ -1432,3 +1441,84 @@ void Weapon_BFG (edict_t *ent)
 
 
 //======================================================================
+
+/*
+======================= 
+Punching/Melee
+=======================
+*/
+void Fist_Fire(edict_t *ent)
+{
+	if (ent->client->pers.stam >= 25)
+	{
+		int i;
+		vec3_t start;
+		vec3_t forward, right;
+		vec3_t angles;
+		int damage = 0;
+		if (ent->client->pers.stam >= 100){
+			damage = ent->client->pers.strStat * 10 + 10;
+			ent->client->pers.stam -= 100;
+			ent->client->pers.punchVal = 5;
+
+		}
+		if (ent->client->pers.stam >= 90){
+			damage = ent->client->pers.strStat * 4 + 5;
+			ent->client->pers.stam -= 90 ;
+			ent->client->pers.punchVal = 4;
+
+		}
+		if (ent->client->pers.stam >= 75){
+			damage = ent->client->pers.strStat * 3 + 5;  
+			ent->client->pers.stam -= 75 ;
+			ent->client->pers.punchVal = 3;
+
+		}
+		if (ent->client->pers.stam >= 50){
+			damage = ent->client->pers.strStat * 2 + 2; 
+			ent->client->pers.stam -= 50 ;
+			ent->client->pers.punchVal = 2;
+
+		}
+		if (ent->client->pers.stam >= 25){
+			damage = ent->client->pers.strStat;
+			ent->client->pers.stam -= 25 ;
+			ent->client->pers.punchVal = 1;
+
+		}
+		int kick = 2; //ditto here 
+		vec3_t offset;
+		if (ent->client->ps.gunframe == 0) //rename 11 to after you're attack frame 
+		{
+			ent->client->ps.gunframe++;
+			return;
+		}
+		AngleVectors(ent->client->v_angle, forward, right, NULL);
+
+		VectorScale(forward, -2, ent->client->kick_origin);
+		ent->client->kick_angles[0] = -2;
+
+		VectorSet(offset, 0, 8, ent->viewheight - 8);
+		P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start); //where does the hit start from? 
+
+		if (is_quad)
+		{
+			damage *= 4;
+			kick *= 4;
+		}
+		// get start / end positions
+		VectorAdd(ent->client->v_angle, ent->client->kick_angles, angles);
+		AngleVectors(angles, forward, right, NULL);
+		VectorSet(offset, 0, 8, ent->viewheight - 8);
+		P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
+		punch(ent, start, forward, 45, damage, 200, 1, MOD_PUNCH);
+		ent->client->ps.gunframe++; //NEEDED 
+		PlayerNoise(ent, start, PNOISE_WEAPON); //NEEDED 
+	}
+}
+void Weapon_Null (edict_t *ent)
+{ 
+	static int pause_frames[] = {10, 21, 0};
+	static int fire_frames[] = {6, 0};// Frame stuff here
+	Weapon_Generic (ent, 3, 9, 22, 24, pause_frames, fire_frames, Fist_Fire); 
+}

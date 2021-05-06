@@ -383,6 +383,10 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 				message = "tried to invade";
 				message2 = "'s personal space";
 				break;
+			case MOD_PUNCH: 
+				message = "took"; 
+				message2 = "'s fist in the face"; 
+				break;
 			}
 			if (message)
 			{
@@ -416,11 +420,17 @@ void TossClientWeapon (edict_t *self)
 
 	if (!deathmatch->value)
 		return;
-
+	/*
 	item = self->client->pers.weapon;
 	if (! self->client->pers.inventory[self->client->ammo_index] )
 		item = NULL;
 	if (item && (strcmp (item->pickup_name, "Blaster") == 0))
+		item = NULL;
+	*/
+	item = self->client->pers.weapon; 
+	if (!self->client->pers.inventory[self->client->ammo_index])
+		item = NULL;
+	if (item && (strcmp(item->pickup_name, "Hands") == 0))
 		item = NULL;
 
 	if (!((int)(dmflags->value) & DF_QUAD_DROP))
@@ -609,15 +619,28 @@ void InitClientPersistant (gclient_t *client)
 	gitem_t		*item;
 
 	memset (&client->pers, 0, sizeof(client->pers));
-
+	/*
 	item = FindItem("Blaster");
 	client->pers.selected_item = ITEM_INDEX(item);
 	client->pers.inventory[client->pers.selected_item] = 1;
+	*/
+	item = FindItem("Hands");
+	client->pers.selected_item = ITEM_INDEX(item); 
+	client->pers.inventory[client->pers.selected_item] = 1;
 
 	client->pers.weapon = item;
-
 	client->pers.health			= 100;
+	client->pers.curHealth = client->pers.health;
 	client->pers.max_health		= 100;
+	client->pers.punchVal	    = 0;
+	client->pers.statPoints		= 10;
+	client->pers.strStat		= 0;
+	client->pers.dexStat		= 0;
+	client->pers.spdStat		= 0;
+	client->pers.block			= false;
+	client->pers.stam			= 1;
+	client->pers.stamMax		= 100;
+	client->pers.stamRegen		= .11;
 
 	client->pers.max_bullets	= 200;
 	client->pers.max_shells		= 100;
@@ -1586,6 +1609,17 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			level.exitintermission = true;
 		return;
 	}
+	if (ent->client->pers.block == 1)
+		ent->client->pers.health = ent->client->pers.curHealth;
+		
+		
+
+	client->pers.stam += client->pers.stamRegen;
+	if (client->pers.stam > client->pers.stamMax)
+	{
+		client->pers.stam = client->pers.stamMax;
+	}
+	gi.centerprintf(ent, "Stam = %i / %i \n Points = %i \n Str = %i \n Dex = %i \n Spd = %i \n Vamp = %f \n block = %d", (int)client->pers.stam, (int)client->pers.stamMax, client->pers.statPoints, client->pers.strStat, client->pers.dexStat, client->pers.spdStat, client->pers.vampStat, client->pers.block);
 
 	pm_passent = ent;
 
