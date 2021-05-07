@@ -1486,9 +1486,10 @@ void Fist_Fire(edict_t *ent)
 			ent->client->pers.punchVal = 1;
 
 		}
+
 		int kick = 2; //ditto here 
 		vec3_t offset;
-		if (ent->client->ps.gunframe == 0) //rename 11 to after you're attack frame 
+		if (ent->client->ps.gunframe == 0) 
 		{
 			ent->client->ps.gunframe++;
 			return;

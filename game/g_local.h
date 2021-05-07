@@ -846,7 +846,7 @@ typedef struct
 	int			statPoints;
 	int			strStat;
 	int			dexStat;
-	int			spdStat;
+	int			vitStat;
 	qboolean	block;
 	float		stam, stamMax, stamRegen,vampStat;
 	int			selected_item;

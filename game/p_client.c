@@ -636,7 +636,7 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.statPoints		= 10;
 	client->pers.strStat		= 0;
 	client->pers.dexStat		= 0;
-	client->pers.spdStat		= 0;
+	client->pers.vitStat		= 0;
 	client->pers.block			= false;
 	client->pers.stam			= 1;
 	client->pers.stamMax		= 100;
@@ -1609,17 +1609,23 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			level.exitintermission = true;
 		return;
 	}
-	if (ent->client->pers.block == 1)
-		ent->client->pers.health = ent->client->pers.curHealth;
 		
-		
+	ent->health += client->pers.vitStat*.01;
+	if (ent->health > ent->max_health*(client->pers.vitStat*.1 + 1))
+	{
+		ent->health = ent->max_health*(client->pers.vitStat*.1 + 1);
+	}
 
-	client->pers.stam += client->pers.stamRegen;
+	client->pers.stam += client->pers.stamRegen + client->pers.dexStat*.01;
 	if (client->pers.stam > client->pers.stamMax)
 	{
 		client->pers.stam = client->pers.stamMax;
 	}
-	gi.centerprintf(ent, "Stam = %i / %i \n Points = %i \n Str = %i \n Dex = %i \n Spd = %i \n Vamp = %f \n block = %d", (int)client->pers.stam, (int)client->pers.stamMax, client->pers.statPoints, client->pers.strStat, client->pers.dexStat, client->pers.spdStat, client->pers.vampStat, client->pers.block);
+
+	gi.centerprintf(ent, "Stam = %i / %i \n Points = %i \n Str = %i \n Dex = %i \n Vit = %i \n Vamp = %f \n block = %d", (int)client->pers.stam, (int)client->pers.stamMax, client->pers.statPoints, client->pers.strStat, client->pers.dexStat, client->pers.vitStat, client->pers.vampStat, client->pers.block);
+
+
+
 
 	pm_passent = ent;
 

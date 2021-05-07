@@ -250,9 +250,9 @@ void Cmd_Give_f (edict_t *ent)
 	{
 		ent->client->pers.dexStat += 1;
 	}
-	if (give_all || Q_stricmp(name, "Spd") == 0)
+	if (give_all || Q_stricmp(name, "vit") == 0)
 	{
-		ent->client->pers.spdStat += 1;
+		ent->client->pers.vitStat += 1;
 	}
 	if (give_all || Q_stricmp(name, "Vamp") == 0)
 	{
@@ -266,9 +266,9 @@ void Cmd_Give_f (edict_t *ent)
 	{
 		ent->client->pers.dexStat += 10;
 	}
-	if (give_all || Q_stricmp(name, "Spd10") == 0)
+	if (give_all || Q_stricmp(name, "vit10") == 0)
 	{
-		ent->client->pers.spdStat += 10;
+		ent->client->pers.vitStat += 10;
 	}
 	if (give_all || Q_stricmp(name, "Str25") == 0)
 	{
@@ -278,9 +278,9 @@ void Cmd_Give_f (edict_t *ent)
 	{
 		ent->client->pers.dexStat += 25;
 	}
-	if (give_all || Q_stricmp(name, "Spd25") == 0)
+	if (give_all || Q_stricmp(name, "vit25") == 0)
 	{
-		ent->client->pers.spdStat += 25;
+		ent->client->pers.vitStat += 25;
 	}
 	if (give_all || Q_stricmp(name, "Str100") == 0)
 	{
@@ -290,9 +290,9 @@ void Cmd_Give_f (edict_t *ent)
 	{
 		ent->client->pers.dexStat += 100;
 	}
-	if (give_all || Q_stricmp(name, "Spd100") == 0)
+	if (give_all || Q_stricmp(name, "vit100") == 0)
 	{
-		ent->client->pers.spdStat += 100;
+		ent->client->pers.vitStat += 100;
 	}
 	if (Q_stricmp(name, "block") == 0)
 	{
