@@ -2,7 +2,7 @@ This mod will be b a basic combat replacer that makes quake 2 into a boxing game
 
 Final Deliverables: 
 - Boxing attacks (L/R mouse Movement) with jabs, hooks, uppercuts, etc (at least 5 attacks per arm)
- - Stats that can be customized 
+- Stats that can be customized 
 - Blocks and Dodges for enemy actions 
 -  Opponent Boxer to do said actions 
 - Round Based combat
